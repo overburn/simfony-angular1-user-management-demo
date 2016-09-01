@@ -75,3 +75,10 @@ nelmio_cors:
         allow_origin: ['*']
         allow_methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS']
         max_age: 3600
+
+# Doctrine Migrations Configuration
+doctrine_migrations:
+  dir_name: "%kernel.root_dir%/Migrations"
+  namespace: AppBundle\Migrations
+  table_name: Migrations
+  name: AppBundle Migrations
