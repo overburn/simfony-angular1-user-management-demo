@@ -1,34 +1,146 @@
 <?php
-  namespace AppBundle\Entity;
 
-  use Doctrine\ORM\Mapping as ORM;
+namespace AppBundle\Entity;
 
-  /**
-   * @ORM\Entity
-   * @ORM\Table(name="duties")
-   */
-   class Duty
-   {
-      /**
-       * @ORM\Id
-       * @ORM\Column(type="integer")
-       * @ORM\GeneratedValue(strategy="AUTO")
-       */
-      protected $id;
+use Doctrine\ORM\Mapping as ORM;
 
-      /**
-       * @ORM\Column(type="string", length=255)
-       */
-      protected $name;
+/**
+ * Duty
+ *
+ * @ORM\Table(name="duty")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DutyRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Duty
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
-      /**
-       * @ORM\Column(name="created_at", type="datetime")
-       */
-      protected $created_at;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     */
+    private $name;
 
-      /**
-       * @ORM\Column(name="modified_at", type="datetime")
-       */
-      protected $modified_at;
-   }
-?>
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Duty
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Duty
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Duty
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->createdAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Gets triggered only on insert
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTime("now");
+        $this->updatedAt = new \DateTime("now");
+    }
+
+    /**
+     * Gets triggered every time on update
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->updatedAt = new \DateTime("now");
+    }
+}

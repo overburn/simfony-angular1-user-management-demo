@@ -214,8 +214,8 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
             // update-user
             if (preg_match('#^/users/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-                if ($this->context->getMethod() != 'PATCH') {
-                    $allow[] = 'PATCH';
+                if ($this->context->getMethod() != 'PUT') {
+                    $allow[] = 'PUT';
                     goto not_updateuser;
                 }
 
@@ -234,6 +234,22 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             }
             not_removeuser:
 
+            // upload-photo
+            if ($pathinfo === '/users/upload-photo') {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_uploadphoto;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\UserController::uploadPhotoAction',  '_route' => 'upload-photo',);
+            }
+            not_uploadphoto:
+
+        }
+
+        // api_login_check
+        if ($pathinfo === '/api/login_check') {
+            return array('_route' => 'api_login_check');
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

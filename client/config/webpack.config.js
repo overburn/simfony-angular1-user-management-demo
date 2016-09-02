@@ -7,7 +7,16 @@ module.exports = {
 
   entry: {
     app: '../app/app.js',
-    vendor: ['angular', 'angular-ui-router', 'angular-ui-bootstrap']
+    vendor: [ 'angular',
+              'angular-ui-router',
+              'angular-ui-bootstrap',
+              'angular-datatables',
+              'angular-file-upload',
+              'ngstorage',
+              'ui-select',
+              'jquery',
+              'datatables.net',
+              'datatables.net-bs', ]
   },
 
   output: {
@@ -23,6 +32,9 @@ module.exports = {
         { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
         { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
         { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
+        { test: /\.jpg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/jpg" },
+        { test: /\.png(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/png" },
+        { test: /\.gif(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/gif" },
         { test: /\.tpl.html$/, exclude: /node_modules/, loader: 'raw'}
     ]
   },
@@ -38,9 +50,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: '../index.html',
       template: '../app/templates/index.tpl.html'
+    }),
+    new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        "window.jQuery": "jquery"
     })
   ],
-
   watch: true,
   debug: true
 };

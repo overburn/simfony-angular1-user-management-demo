@@ -1,0 +1,103 @@
+<div class="panel">
+  <button class="btn btn-default" ui-sref="users.create">Create User</button>
+</div>
+
+<div class="alert alert-info ng-hide" ng-show="status.loaded == false">
+  <span class="loading-spinner"></span>
+  Loading users ...
+</div>
+
+<div class="ng-hide" ng-show="status.loaded == true">
+  <div class="col-md-4">
+    <div class="panel panel-default ">
+      <div class="panel-heading">
+        Filters
+      </div>
+
+      <div class="panel-body">
+        <form>
+          <div class="form-group">
+            <label for="input-filter-name">First Name</label>
+            <input type="text" class="form-control" id="input-filter-name" placeholder="Filter by first name" ng-model="filters.firstName" ng-change="updateUserList()"/>
+          </div>
+          <div class="form-group">
+            <label for="input-filter-name">Last Name</label>
+            <input type="text" class="form-control" id="input-filter-name" placeholder="Filter by last name" ng-model="filters.lastName" ng-change="updateUserList()"/>
+          </div>
+          <div class="form-group">
+            <label for="input-filter-supervisor">Supervisor</label>
+            <ui-select
+              ng-model="filters.supervisor"
+              theme="bootstrap"
+              title="Filter supervisor"
+              ng-change="updateUserList()">
+              <ui-select-match placeholder="">
+                {{$select.selected.first_name}} {{$select.selected.last_name}}
+                <button class="btn btn-xs btn-danger btn-clear-supervisor" ng-click="clearSupervisor($event)">X</button>
+              </ui-select-match>
+              <ui-select-choices repeat="supervisor in supervisors | filter: $select.search">
+                <span>{{supervisor.first_name}} {{supervisor.last_name}}</span>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+
+          <div class="form-group">
+            <label for="input-filter-duties">Duties</label>
+            <ui-select
+              multiple
+              ng-model="filters.duties"
+              theme="bootstrap"
+              title="Choose duties"
+              ng-change="updateUserList()">
+              <ui-select-match placeholder="Filter by duties">{{$item.name}}</ui-select-match>
+              <ui-select-choices repeat="duty in duties | filter: $select.search">
+                <span>{{duty.name}}</span>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <table class="table user-list-table">
+        <thead>
+          <tr>
+              <th>ID</th>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>Supervisor</th>
+              <th>Duties</th>
+              <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in users">
+              <td>{{user.id}}</td>
+              <td width="100">
+                  <img src="{{photoPath}}{{user.photo}}" class="profile-photo-thumbnail"/>
+              </td>
+              <td >{{user.first_name}} {{user.last_name}}</td>
+              <td>{{user.email}}</td>
+              <td><span class="badge">{{user.gender}}</span></td>
+              <td width="150">
+                <span ng-if="user.supervisor">
+                  {{user.supervisor.first_name}} {{user.supervisor.last_name}}
+                </span>
+              </td>
+              <td width="150">
+                <span ng-repeat="duty in user.duties">
+                  {{duty.name}};
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-xs" ui-sref="users.display({userId:user.id})">Go To User</button>
+              </td>
+          </tr>
+        </tbody>
+    </table>
+  </div>
+</div>

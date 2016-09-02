@@ -1,4 +1,9 @@
 angular.module('controllers', [])
 
-require('./HomeController.js');
-require('./TestController.js');
+require('./LoginController.js');
+
+require('./UserController.js');
+require('./UserCreateController.js');
+require('./UserDisplayController.js');
+require('./UserEditController.js');
+require('./UserListController.js');

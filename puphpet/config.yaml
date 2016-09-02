@@ -28,7 +28,7 @@ vagrantfile:
                                 vflmnfp_qnad17almysj:
                                     host: '5567'
                                     guest: '22'
-                        memory: '512'
+                        memory: '4096'
                         cpus: '1'
         provision:
             puppet:

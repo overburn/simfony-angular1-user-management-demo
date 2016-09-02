@@ -7,8 +7,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use AppBundle\Repository\DutyRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+/**
+ *  @Security("is_granted('ROLE_USER')")
+ */
 class DutyController extends Controller
 {
   /**
@@ -17,7 +24,13 @@ class DutyController extends Controller
    */
   public function listAction(Request $request)
   {
-    return new JsonResponse("Not Implemented");
+    $repository = $this->getDoctrine()->getRepository('AppBundle:Duty');
+    $duties = $repository->findAll();
+
+    $serializer = $this->container->get('jms_serializer');
+    $jsonDuties = $serializer->serialize($duties, 'json');
+
+    return new Response($jsonDuties);
   }
 
   /**

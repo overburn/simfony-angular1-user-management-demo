@@ -16,7 +16,8 @@ framework:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
-    csrf_protection: ~
+    csrf_protection:
+      enabled: false
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
     templating:
@@ -47,6 +48,8 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        mapping_types:
+            enum: string
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -82,3 +85,10 @@ doctrine_migrations:
   namespace: AppBundle\Migrations
   table_name: Migrations
   name: AppBundle Migrations
+
+# Lexik JWT Authentication
+lexik_jwt_authentication:
+  private_key_path: %jwt_private_key_path%
+  public_key_path: %jwt_public_key_path%
+  pass_phrase: %jwt_key_pass_phrase%
+  token_ttl: %jwt_token_ttl%

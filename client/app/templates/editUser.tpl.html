@@ -1,0 +1,130 @@
+<ol class="breadcrumb">
+  <li>
+    <a ui-sref="users.list()">
+      Users
+    </a>
+    <li class="active">
+      <span>Update User</span>
+      <span class="ng-hide" ng-show="status.loaded == true">: {{user.firstName}} {{user.lastName}}</span>
+    </li>
+  </li>
+</ol>
+
+<div class="alert alert-info ng-hide" ng-show="status.loaded == false">
+  <span class="loading-spinner"></span>
+  Loading user ...
+</div>
+
+<div class="ng-hide"  ng-show="status.loaded">
+
+  <div class="page-heading">
+    <h1>Create new user</h1>
+  </div>
+
+
+  <form ng-submit="submitForm()">
+    <div class="alert alert-danger ng-hide" ng-show="status.error">
+      <span>There were errors in your submission</span>
+      <ul>
+        <li ng-repeat="error in status.errors">
+          {{error.message}} ({{error.field}})
+        </li>
+      </ul>
+    </div>
+
+    <div class="alert alert-info" ng-show="status.loading">
+      <span class="loading-spinner"></span>
+      <span>Updating user ...</span>
+    </div>
+
+    <div class="alert alert-success" ng-show="status.success">
+      <span>The user has been updated</span>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="input-email">Email Address</label>
+          <input type="email" class="form-control" id="input-email" placeholder="Email" ng-model="user.email"/>
+        </div>
+
+        <div class="form-group">
+          <label for="input-password">Password</label>
+          <input type="password" class="form-control" id="input-password" placeholder="Password" ng-model="user.password"/>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="input-first-name">First Name</label>
+            <input type="text" class="form-control" id="input-first-name" placeholder="First Name" ng-model="user.firstName"/>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="input-last-name">Last Name</label>
+            <input type="text" class="form-control" id="input-last-name" placeholder="Last Name" ng-model="user.lastName"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input-gender">Gender</label>
+          <div class="radio">
+            <label>
+              <input type="radio" name="input-gender" id="input-gender-male" value="M" ng-model="user.gender"/>
+              Male
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="input-gender" id="input-gender-female" value="F" ng-model="user.gender"/>
+              Female
+            </label>
+          </div>
+        </div>
+
+        <div class="alert alert-warning ng-hide" ng-show="!status.supervisorsLoaded">
+          <span class="loading-spinner"></span> Supervisors loading ...
+        </div>
+        <div class="form-group ng-hide" ng-show="status.supervisorsLoaded">
+          <label for="input-supervisor">Supervisor</label>
+          <ui-select
+            ng-model="user.supervisor"
+            theme="bootstrap"
+            title="Choose a supervisor">
+            <ui-select-match placeholder="Try a name">{{$select.selected.first_name}} {{$select.selected.last_name}}</ui-select-match>
+            <ui-select-choices repeat="supervisor in supervisors | filter: $select.search">
+              <span>{{supervisor.first_name}} {{supervisor.last_name}}</span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+
+        <div class="alert alert-warning ng-hide" ng-show="!status.dutiesLoaded">
+          <span class="loading-spinner"></span> Duties loading ...
+        </div>
+        <div class="form-group ng-hide" ng-show="status.dutiesLoaded">
+          <label for="input-duties">Duties</label>
+          <ui-select
+            multiple
+            ng-model="user.duties"
+            theme="bootstrap"
+            title="Choose duties">
+            <ui-select-match placeholder="">{{$item.name}}</ui-select-match>
+            <ui-select-choices repeat="duty in duties | filter: $select.search">
+              <span>{{duty.name}}</span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="profile-photo">
+          <img src="{{photoPath}}{{user.photo}}"/>
+        </div>
+
+        <button type="button" class="btn btn-default btn-upload-photo" ng-click="triggerUpload()">Upload Profile Photo</button>
+        <input type="file" id="hidden-file-upload" nv-file-select uploader="uploader" class="ng-hide"/>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success" ng-click="Submit" ng-disabled="status.formNotReady">Save</button>
+  </form>
+</div>

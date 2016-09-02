@@ -1,0 +1,88 @@
+<ol class="breadcrumb">
+  <li>
+    <a ui-sref="users.list()">
+      Users
+    </a>
+    <li class="active">
+      <span>Display User</span>
+      <span class="ng-hide" ng-show="status.loaded == true">: {{user.first_name}} {{user.last_name}}</span>
+    </li>
+  </li>
+</ol>
+
+<div class="alert alert-info ng-hide" ng-show="status.loaded == false">
+  <span class="loading-spinner"></span>
+  Loading user ...
+</div>
+
+<div class="ng-hide" ng-show="status.loaded == true">
+
+  <div class="panel"  ng-if="!user.deleted_at">
+    <button class="btn btn-warning" ui-sref="users.edit({userId: user.id})">Edit User</button>
+    <button class="btn btn-danger" ng-click="removeUser(user.id)">Delete User</button>
+  </div>
+
+  <div class="alert alert-warning" ng-show="user.deleted_at">
+    This user has been removed
+  </div>
+
+  <div class="page-heading">
+    <h1>Display User: {{user.first_name}} {{user.last_name}} (<i>{{user.email}}</i>)</h1>
+  </div>
+
+  <div class="user-profile">
+    <div class="col-md-8">
+      <div class="user-profile__row">
+        <div class="user-profile__label">
+          Name
+        </div>
+        <div class="user-profile__value">
+          {{user.first_name}} {{user.last_name}}
+        </div>
+      </div>
+
+      <div class="user-profile__row">
+        <div class="user-profile__label">
+          Email
+        </div>
+        <div class="user-profile__value">
+          {{user.email}}
+        </div>
+      </div>
+
+      <div class="user-profile__row">
+        <div class="user-profile__label">
+          Gender
+        </div>
+        <div class="user-profile__value">
+          <span class="badge">{{user.gender}}</span>
+        </div>
+      </div>
+
+      <div class="user-profile__row" ng-if="user.supervisor">
+        <div class="user-profile__label">
+          Supervisor
+        </div>
+        <div class="user-profile__value">
+          <a ui-sref="users.display({userId: user.supervisor.id})">{{user.supervisor.first_name}} {{user.supervisor.last_name}}</a>
+        </div>
+      </div>
+
+      <div class="user-profile__row" ng-if="user.duties.length > 0">
+        <div class="user-profile__label">
+          Duties
+        </div>
+        <div class="user-profile__value">
+            <span class="inline-listing" ng-repeat="duty in user.duties">
+              {{duty.name}};
+            </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="profile-photo">
+        <img src="{{photoPath}}{{user.photo}}"/>
+      </div>
+    </div>
+  </div>
+</div>
